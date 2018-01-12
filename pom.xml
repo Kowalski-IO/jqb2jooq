@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.kowalski</groupId>
+    <artifactId>jqb2jooq</artifactId>
+    <version>1.0.0</version>
+
+    <name>jQuery Builder 2 JOOQ</name>
+    <description>Bridges the gap between querybuilder.js.org and jooq.org with very little code.</description>
+    <url>https://github.com/kowalski-io/jqb2jooq</url>
+
+    <organization>
+        <name>Kowalski.io</name>
+        <url>https://kowalski.io</url>
+    </organization>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://github.com/Kowalski-IO/jqb2jooq/blob/master/LICENSE.md</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Brandon T. Kowalski</name>
+            <email>brandon@kowalski.io</email>
+        </developer>
+    </developers>
+
+    <scm>
+        <url>https://github.com/Kowalski-IO/jqb2jooq</url>
+    </scm>
+
+    <issueManagement>
+        <url>https://github.com/Kowalski-IO/jqb2jooq/issues</url>
+    </issueManagement>
+
+    <properties>
+        <java.version>1.8</java.version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+
+        <joor.version>0.9.7</joor.version>
+        <jooq.version>3.10.1</jooq.version>
+        <lombok.version>1.16.16</lombok.version>
+        <junit.version>4.12</junit.version>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>joor-java-8</artifactId>
+            <version>${joor.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq</artifactId>
+            <version>${jooq.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>
