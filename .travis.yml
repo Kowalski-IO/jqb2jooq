@@ -1,5 +1,6 @@
 language: java
 sudo: false
+install: "mvn clean compile generate-test-sources test install -P testing,release"
 addons:
   apt:
     packages:
