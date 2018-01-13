@@ -2,6 +2,7 @@
 jQuery QueryBuilder meets JOOQ without the work.
 
 [![Build Status](https://travis-ci.org/Kowalski-IO/jqb2jooq.svg?branch=master)](https://travis-ci.org/Kowalski-IO/jqb2jooq)
+[![Coverage Status](https://coveralls.io/repos/github/Kowalski-IO/jqb2jooq/badge.svg?branch=master)](https://coveralls.io/github/Kowalski-IO/jqb2jooq?branch=master)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.kowalski/jqb2jooq/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.kowalski/jqb2jooq)
 
 
