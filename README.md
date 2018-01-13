@@ -2,6 +2,7 @@
 jQuery QueryBuilder meets JOOQ without the work.
 
 [![Build Status](https://travis-ci.org/Kowalski-IO/jqb2jooq.svg?branch=master)](https://travis-ci.org/Kowalski-IO/jqb2jooq)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.kowalski/jqb2jooq/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.kowalski/jqb2jooq)
 
 
 What is [jQuery QueryBuilder](http://querybuilder.js.org)?
@@ -20,3 +21,102 @@ jQuery QueryBuilder filter fields to JOOQ auto-generated fields. Once you define
 
 
 ## Usage
+
+Getting started is just as easy as the famed 5 Minute Wordpress Install (only you don't have to use Wordpress :smirk:).
+
+**First**, add the following dependency to your pom.xml.
+
+```xml
+<dependency>
+  <groupId>io.kowalski</groupId>
+  <artifactId>jqb2jooq</artifactId>
+  <version>1.0.0</version>
+</dependency>
+```
+***
+
+**Second**, you will need to define a mapping between jqb filter fields and JOOQ fields.
+
+This is done by creating an enum that implements [RuleTarget.java](src/main/java/io/kowalski/jqb2jooq/RuleTarget.java).
+
+```java
+package io.kowalski.jqb2jooq.test;
+
+import io.kowalski.jqb2jooq.RuleTarget;
+import org.jooq.Condition;
+import org.jooq.Field;
+
+import static io.kowalski.jqb2jooq.test.jooq.Tables.*;
+
+public enum TestFilterTargets implements RuleTarget {
+
+  FULLNAME(EMPLOYEES.FULLNAME),
+  DOB(EMPLOYEES.DOB),
+  SALARY(PAYROLL.SALARY);
+
+  private final Field field;
+  private final Condition[] implicitConditions;
+
+  TestFilterTargets(Field field, Condition... implicitConditions) {
+      this.field = field;
+      this.implicitConditions = implicitConditions;
+  }
+
+  @Override
+  public TestFilterTargets parse(String value) {
+      return TestFilterTargets.valueOf(value);
+  }
+
+  @Override
+  public Field getField() {
+      return field;
+  }
+
+  @Override
+  public Condition[] getImplicitConditions() {
+      return implicitConditions;
+  }
+
+}
+```
+
+***
+
+**Last, but not least**, you need to convert the json filter from jqb to a JOOQ condition.
+
+jqb2jooq assumes that the json filter has been deserialized into: 
+```java
+Map<String, Object>
+```
+
+Here is a quick snippet of how to perform said task with [gson](https://github.com/google/gson).
+```java
+java.lang.reflect.Type mapType = new com.google.gson.reflect.TypeToken<Map<String, Object>>() 
+{}.getType();
+
+Map<String, Object> filterMap = new Gson().fromJson(rawJson, mapType);
+```
+Once you have the filter deserialized all you have to do is...
+
+```java
+org.jooq.Condition condition = JQB2JOOQ.parse(TestFilterTargets.class, filterMap);
+
+// ...and immediately put it to work
+
+try (DSLContext dsl = DSL.using(dataSource, SQLDialect.H2)) {
+  List<Employees> employees = dsl.select().from(EMPLOYEES)
+          .where(condition).fetchInto(Employees.class);
+
+  assert employees.size() == 1;
+  assert employees.get(0).getId().equals(UUID.fromString("7293357b-8c09-4662-8400-c7fb73d8ab1c"));
+}
+
+```
+
+***
+
+# And that's all she wrote
+
+I hope you enjoy using jqb2jooq! If you notice anything funky please file an issue.
+
+:heart:
