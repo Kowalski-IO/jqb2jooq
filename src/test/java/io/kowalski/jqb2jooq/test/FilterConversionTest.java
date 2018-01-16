@@ -34,6 +34,7 @@ public class FilterConversionTest {
     private static final String FULLNAME_EQUALS_FILTER = "{\"condition\":\"AND\",\"rules\":[{\"id\":\"FULLNAME\",\"field\":\"FULLNAME\",\"type\":\"string\",\"input\":\"text\",\"operator\":\"equal\",\"value\":\"Isaac Fulmer\"}],\"valid\":true}";
     private static final String DOB_BETWEEN_FILTER = "{\"condition\":\"OR\",\"rules\":[{\"id\":\"dob\",\"field\":\"dob\",\"type\":\"date\",\"input\":\"text\",\"operator\":\"between\",\"value\":[\"1982-01-01\",\"1988-04-11\"]}],\"valid\":true}";
     private static final String SALARY_LESS_OR_EQUAL_FILTER = "{\"condition\":\"AND\",\"rules\":[{\"id\":\"salary\",\"field\":\"salary\",\"type\":\"double\",\"input\":\"number\",\"operator\":\"less_or_equal\",\"value\":\"37000\"}],\"valid\":true}";
+    private static final String NESTED_DOB_HOURLY_FILTER = "{\"condition\":\"OR\",\"rules\":[{\"id\":\"dob\",\"field\":\"dob\",\"type\":\"date\",\"input\":\"text\",\"operator\":\"greater\",\"value\":\"1985-01-01\"},{\"condition\":\"AND\",\"rules\":[{\"id\":\"hourly\",\"field\":\"hourly\",\"type\":\"integer\",\"input\":\"number\",\"operator\":\"less\",\"value\":\"20\"},{\"id\":\"hourly\",\"field\":\"hourly\",\"type\":\"integer\",\"input\":\"number\",\"operator\":\"not_equal\",\"value\":\"15\"}]}],\"valid\":true}";
 
     private static HikariDataSource dataSource;
 
@@ -88,7 +89,21 @@ public class FilterConversionTest {
                     .innerJoin(PAYROLL).on(EMPLOYEES.ID.eq(PAYROLL.EMPLOYEE_ID))
                     .where(condition).fetchInto(Employees.class);
 
-            assert employees.size() == 5;
+            assert employees.size() == 3;
+        }
+    }
+
+    @Test
+    public void nestedDOBHourly() {
+        Map<String, Object> filter = jsonToMap(NESTED_DOB_HOURLY_FILTER);
+        Condition condition = JQB2JOOQ.parse(TestFilterTargets.class, filter);
+
+        try (DSLContext dsl = DSL.using(dataSource, SQLDialect.H2)) {
+            List<Employees> employees = dsl.select().from(EMPLOYEES)
+                    .innerJoin(PAYROLL).on(EMPLOYEES.ID.eq(PAYROLL.EMPLOYEE_ID))
+                    .where(condition).fetchInto(Employees.class);
+
+            assert employees.size() == 3;
         }
     }
 

@@ -106,9 +106,6 @@ org.jooq.Condition condition = JQB2JOOQ.parse(TestFilterTargets.class, filterMap
 try (DSLContext dsl = DSL.using(dataSource, SQLDialect.H2)) {
   List<Employees> employees = dsl.select().from(EMPLOYEES)
           .where(condition).fetchInto(Employees.class);
-
-  assert employees.size() == 1;
-  assert employees.get(0).getId().equals(UUID.fromString("7293357b-8c09-4662-8400-c7fb73d8ab1c"));
 }
 
 ```

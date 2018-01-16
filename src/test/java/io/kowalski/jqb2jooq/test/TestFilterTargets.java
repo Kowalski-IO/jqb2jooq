@@ -10,7 +10,8 @@ public enum TestFilterTargets implements RuleTarget {
 
     FULLNAME(EMPLOYEES.FULLNAME),
     DOB(EMPLOYEES.DOB),
-    SALARY(PAYROLL.SALARY);
+    SALARY(PAYROLL.AMOUNT, PAYROLL.TYPE.eq("SALARY")),
+    HOURLY(PAYROLL.AMOUNT, PAYROLL.TYPE.eq("HOURLY"));
 
     private final Field field;
     private final Condition[] implicitConditions;

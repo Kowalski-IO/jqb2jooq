@@ -7,9 +7,9 @@ import java.util.Map;
 
 import static org.jooq.tools.reflect.Reflect.on;
 
-class FilterParser {
+final class FilterParser {
 
-    static Filter parseJSON(final Class<? extends RuleTarget> targetClass, final Map<String, Object> jsonFilter) {
+    protected static Filter parseJSON(final Class<? extends RuleTarget> targetClass, final Map<String, Object> jsonFilter) {
         RuleSet outerRuleSet = new RuleSet();
         outerRuleSet.setOperator(BooleanOperator.valueOf(jsonFilter.get("condition").toString()));
         outerRuleSet.setRules(parseRaw(targetClass, parseRulesList(jsonFilter)));
