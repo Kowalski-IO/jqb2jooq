@@ -6,7 +6,7 @@
 
     <groupId>io.kowalski</groupId>
     <artifactId>jqb2jooq</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <name>jQuery Builder 2 JOOQ</name>
     <description>Bridges the gap between querybuilder.js.org and jooq.org with very little code.</description>
@@ -134,9 +134,6 @@
                 <groupId>org.eluder.coveralls</groupId>
                 <artifactId>coveralls-maven-plugin</artifactId>
                 <version>4.3.0</version>
-                <configuration>
-                    <repoToken>${coveralls.token}</repoToken>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
