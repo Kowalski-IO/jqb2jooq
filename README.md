@@ -1,10 +1,10 @@
 # jqb2jooq
 jQuery QueryBuilder meets JOOQ without the work.
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.kowalski/jqb2jooq/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.kowalski/jqb2jooq)
 [![Build Status](https://travis-ci.org/Kowalski-IO/jqb2jooq.svg?branch=master)](https://travis-ci.org/Kowalski-IO/jqb2jooq)
 [![Coverage Status](https://coveralls.io/repos/github/Kowalski-IO/jqb2jooq/badge.svg?branch=master&)](https://coveralls.io/github/Kowalski-IO/jqb2jooq?branch=master)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.kowalski/jqb2jooq/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.kowalski/jqb2jooq)
-
+[![Dependency Status](https://beta.gemnasium.com/badges/github.com/Kowalski-IO/jqb2jooq.svg)](https://beta.gemnasium.com/projects/github.com/Kowalski-IO/jqb2jooq)
 
 What is [jQuery QueryBuilder](http://querybuilder.js.org)?
 
@@ -31,7 +31,7 @@ Getting started is just as easy as the famed 5 Minute Wordpress Install (only yo
 <dependency>
   <groupId>io.kowalski</groupId>
   <artifactId>jqb2jooq</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.2</version>
 </dependency>
 ```
 ***
