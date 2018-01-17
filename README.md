@@ -2,7 +2,7 @@
 jQuery QueryBuilder meets JOOQ without the work.
 
 [![Build Status](https://travis-ci.org/Kowalski-IO/jqb2jooq.svg?branch=master)](https://travis-ci.org/Kowalski-IO/jqb2jooq)
-[![Coverage Status](https://coveralls.io/repos/github/Kowalski-IO/jqb2jooq/badge.svg?branch=master)](https://coveralls.io/github/Kowalski-IO/jqb2jooq?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/Kowalski-IO/jqb2jooq/badge.svg?branch=master&)](https://coveralls.io/github/Kowalski-IO/jqb2jooq?branch=master)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.kowalski/jqb2jooq/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.kowalski/jqb2jooq)
 
 
@@ -53,7 +53,9 @@ public enum TestFilterTargets implements RuleTarget {
 
   FULLNAME(EMPLOYEES.FULLNAME),
   DOB(EMPLOYEES.DOB),
-  SALARY(PAYROLL.SALARY);
+  SALARY(PAYROLL.AMOUNT, PAYROLL.TYPE.eq("SALARY")),
+  HOURLY(PAYROLL.AMOUNT, PAYROLL.TYPE.eq("HOURLY")),
+  FOOD(EMPLOYEES.FAVORITE_FOOD);
 
   private final Field field;
   private final Condition[] implicitConditions;
@@ -113,8 +115,6 @@ try (DSLContext dsl = DSL.using(dataSource, SQLDialect.H2)) {
 
 ***
 
-# And that's all she wrote
+# That's all folks!
 
-I hope you enjoy using jqb2jooq! If you notice anything funky please file an issue.
-
-:heart:
+I hope you enjoy using jqb2jooq! If you notice anything funky please file an issue. :heart:
