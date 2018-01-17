@@ -1,5 +1,8 @@
 package io.kowalski.jqb2jooq;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -7,7 +10,8 @@ import java.util.Map;
 
 import static org.jooq.tools.reflect.Reflect.on;
 
-final class FilterParser {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+class FilterParser {
 
     protected static Filter parseJSON(final Class<? extends RuleTarget> targetClass, final Map<String, Object> jsonFilter) {
         RuleSet outerRuleSet = new RuleSet();

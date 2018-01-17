@@ -1,5 +1,7 @@
 package io.kowalski.jqb2jooq;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.jooq.Condition;
 
 import java.util.Map;
@@ -8,6 +10,7 @@ import java.util.Map;
  * JQB2JOOQ is the entry point of the library and handles the conversion
  * of a Json Filter to a JOOQ Condition
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class JQB2JOOQ {
 
     /**

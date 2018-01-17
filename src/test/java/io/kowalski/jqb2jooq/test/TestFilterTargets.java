@@ -11,7 +11,8 @@ public enum TestFilterTargets implements RuleTarget {
     FULLNAME(EMPLOYEES.FULLNAME),
     DOB(EMPLOYEES.DOB),
     SALARY(PAYROLL.AMOUNT, PAYROLL.TYPE.eq("SALARY")),
-    HOURLY(PAYROLL.AMOUNT, PAYROLL.TYPE.eq("HOURLY"));
+    HOURLY(PAYROLL.AMOUNT, PAYROLL.TYPE.eq("HOURLY")),
+    FOOD(EMPLOYEES.FAVORITE_FOOD);
 
     private final Field field;
     private final Condition[] implicitConditions;

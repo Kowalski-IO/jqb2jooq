@@ -18,7 +18,7 @@ enum RuleOperator {
     NOT_IN,
 
     CONTAINS,
-    DOES_NOT_CONTAIN,
+    NOT_CONTAINS,
 
     BETWEEN,
     NOT_BETWEEN,

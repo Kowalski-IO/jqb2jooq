@@ -35,6 +35,7 @@ public class FilterConversionTest {
     private static final String DOB_BETWEEN_FILTER = "{\"condition\":\"OR\",\"rules\":[{\"id\":\"dob\",\"field\":\"dob\",\"type\":\"date\",\"input\":\"text\",\"operator\":\"between\",\"value\":[\"1982-01-01\",\"1988-04-11\"]}],\"valid\":true}";
     private static final String SALARY_LESS_OR_EQUAL_FILTER = "{\"condition\":\"AND\",\"rules\":[{\"id\":\"salary\",\"field\":\"salary\",\"type\":\"double\",\"input\":\"number\",\"operator\":\"less_or_equal\",\"value\":\"37000\"}],\"valid\":true}";
     private static final String NESTED_DOB_HOURLY_FILTER = "{\"condition\":\"OR\",\"rules\":[{\"id\":\"dob\",\"field\":\"dob\",\"type\":\"date\",\"input\":\"text\",\"operator\":\"greater\",\"value\":\"1985-01-01\"},{\"condition\":\"AND\",\"rules\":[{\"id\":\"hourly\",\"field\":\"hourly\",\"type\":\"integer\",\"input\":\"number\",\"operator\":\"less\",\"value\":\"20\"},{\"id\":\"hourly\",\"field\":\"hourly\",\"type\":\"integer\",\"input\":\"number\",\"operator\":\"not_equal\",\"value\":\"15\"}]}],\"valid\":true}";
+    private static final String GRAB_BAG_FILTER = "{\"condition\":\"AND\",\"rules\":[{\"id\":\"salary\",\"field\":\"salary\",\"type\":\"double\",\"input\":\"number\",\"operator\":\"greater_or_equal\",\"value\":\"10\"},{\"id\":\"food\",\"field\":\"food\",\"type\":\"string\",\"input\":\"text\",\"operator\":\"in\",\"value\":\"chicken\"},{\"id\":\"food\",\"field\":\"food\",\"type\":\"string\",\"input\":\"text\",\"operator\":\"not_in\",\"value\":\"roast beef\"},{\"id\":\"food\",\"field\":\"food\",\"type\":\"string\",\"input\":\"text\",\"operator\":\"contains\",\"value\":\"a\"},{\"id\":\"food\",\"field\":\"food\",\"type\":\"string\",\"input\":\"text\",\"operator\":\"not_contains\",\"value\":\"z\"},{\"id\":\"salary\",\"field\":\"salary\",\"type\":\"double\",\"input\":\"number\",\"operator\":\"not_between\",\"value\":[\"20000\",\"30000\"]},{\"id\":\"food\",\"field\":\"food\",\"type\":\"string\",\"input\":\"text\",\"operator\":\"is_null\",\"value\":null},{\"id\":\"food\",\"field\":\"food\",\"type\":\"string\",\"input\":\"text\",\"operator\":\"is_not_null\",\"value\":null},{\"id\":\"food\",\"field\":\"food\",\"type\":\"string\",\"input\":\"text\",\"operator\":\"is_empty\",\"value\":null},{\"id\":\"food\",\"field\":\"food\",\"type\":\"string\",\"input\":\"text\",\"operator\":\"is_not_empty\",\"value\":null}],\"valid\":true}";
 
     private static HikariDataSource dataSource;
 
@@ -104,6 +105,20 @@ public class FilterConversionTest {
                     .where(condition).fetchInto(Employees.class);
 
             assert employees.size() == 3;
+        }
+    }
+
+    @Test
+    public void lazyCompleteTestCoverageGrabBag() {
+        Map<String, Object> filter = jsonToMap(GRAB_BAG_FILTER);
+        Condition condition = JQB2JOOQ.parse(TestFilterTargets.class, filter);
+
+        try (DSLContext dsl = DSL.using(dataSource, SQLDialect.H2)) {
+            List<Employees> employees = dsl.select().from(EMPLOYEES)
+                    .innerJoin(PAYROLL).on(EMPLOYEES.ID.eq(PAYROLL.EMPLOYEE_ID))
+                    .where(condition).fetchInto(Employees.class);
+
+            assert employees.size() == 0;
         }
     }
 

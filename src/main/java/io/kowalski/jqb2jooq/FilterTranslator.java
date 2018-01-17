@@ -1,7 +1,10 @@
 package io.kowalski.jqb2jooq;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.jooq.Condition;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 class FilterTranslator {
 
     static Condition translate(Filter filter) {
@@ -28,7 +31,7 @@ class FilterTranslator {
 
     @SuppressWarnings("unchecked")
     private static Condition parseRule(Rule rule) {
-        Condition condition;
+        Condition condition = null;
         switch (rule.getOperator()) {
             case EQUAL:
                 condition = rule.getField().eq(rule.getParameter(0));
@@ -57,7 +60,7 @@ class FilterTranslator {
             case CONTAINS:
                 condition = rule.getField().contains(rule.getParameter(0));
                 break;
-            case DOES_NOT_CONTAIN:
+            case NOT_CONTAINS:
                 condition = rule.getField().notContains(rule.getParameter(0));
                 break;
             case BETWEEN:
@@ -78,8 +81,6 @@ class FilterTranslator {
             case IS_NOT_EMPTY:
                 condition = rule.getField().length().gt(0);
                 break;
-            default:
-                return null;
         }
 
         if (rule.getTarget().getImplicitConditions() != null && rule.getTarget().getImplicitConditions().length > 0) {
@@ -95,15 +96,8 @@ class FilterTranslator {
         if (initial == null) {
             return addition;
         }
-        switch (operator) {
-            case OR:
-                return initial.or(addition);
-            case AND:
-                return initial.and(addition);
-            case NA:
-            default:
-                return null;
-        }
+
+        return operator.equals(BooleanOperator.OR) ? initial.or(addition) : initial.and(addition);
     }
 
 }
