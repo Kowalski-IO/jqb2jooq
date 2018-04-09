@@ -60,8 +60,20 @@ class FilterTranslator {
             case CONTAINS:
                 condition = rule.getField().contains(rule.getParameter(0));
                 break;
+            case CONTAINS_IGNORE_CASE:
+                condition = rule.getField().containsIgnoreCase(rule.getParameter(0));
+                break;
             case NOT_CONTAINS:
                 condition = rule.getField().notContains(rule.getParameter(0));
+                break;
+            case NOT_CONTAINS_IGNORE_CASE:
+                condition = rule.getField().notContainsIgnoreCase(rule.getParameter(0));
+                break;
+            case LIKE_REGEX:
+                condition = rule.getField().likeRegex(rule.getParameter(0).toString());
+                break;
+            case LIKE_REGEX_IGNORE_CASE:
+                condition = rule.getField().lower().likeRegex(rule.getParameter(0).toString().toLowerCase());
                 break;
             case BETWEEN:
                 condition = rule.getField().between(rule.getParameter(0), rule.getParameter(1));
