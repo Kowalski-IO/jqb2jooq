@@ -6,7 +6,7 @@
 
     <groupId>io.kowalski</groupId>
     <artifactId>jqb2jooq</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
 
     <name>jQuery Builder 2 JOOQ</name>
     <description>Bridges the gap between querybuilder.js.org and jooq.org with very little code.</description>
