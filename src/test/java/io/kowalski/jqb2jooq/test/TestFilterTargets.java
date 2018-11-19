@@ -23,11 +23,6 @@ public enum TestFilterTargets implements RuleTarget {
     }
 
     @Override
-    public TestFilterTargets parse(String value) {
-        return TestFilterTargets.valueOf(value);
-    }
-
-    @Override
     public Field getField() {
         return field;
     }

@@ -13,24 +13,24 @@ import static org.jooq.tools.reflect.Reflect.on;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 class FilterParser {
 
-    protected static Filter parseJSON(final Class<? extends RuleTarget> targetClass, final Map<String, Object> jsonFilter) {
+    static Filter parseJSON(final RuleTargetBuilder ruleTargetBuilder, final Map<String, Object> jsonFilter) {
         RuleSet outerRuleSet = new RuleSet();
         outerRuleSet.setOperator(BooleanOperator.valueOf(jsonFilter.get("condition").toString()));
-        outerRuleSet.setRules(parseRaw(targetClass, parseRulesList(jsonFilter)));
+        outerRuleSet.setRules(parseRaw(ruleTargetBuilder, parseRulesList(jsonFilter)));
 
         return new Filter(outerRuleSet);
     }
 
-    private static Collection<FilterPart> parseRaw(final Class<? extends RuleTarget> targetClass, List<Map<String, Object>> rules) {
+    private static Collection<FilterPart> parseRaw(final RuleTargetBuilder ruleTargetBuilder, List<Map<String, Object>> rules) {
         List<FilterPart> filterParts = new ArrayList<>();
 
         rules.forEach(rule -> filterParts.add(rule.containsKey("condition")
-                ? parseRawRuleSet(targetClass, rule) : parseRawRule(targetClass, rule)));
+                ? parseRawRuleSet(ruleTargetBuilder, rule) : parseRawRule(ruleTargetBuilder, rule)));
 
         return filterParts;
     }
 
-    private static RuleSet parseRawRuleSet(final Class<? extends RuleTarget> targetClass, final Map<String, Object> rawRuleSet) {
+    private static RuleSet parseRawRuleSet(final RuleTargetBuilder targetClass, final Map<String, Object> rawRuleSet) {
         RuleSet ruleSet = new RuleSet();
         ruleSet.setOperator(BooleanOperator.valueOf(rawRuleSet.get("condition").toString()));
         ruleSet.setRules(parseRaw(targetClass, parseRulesList(rawRuleSet)));
@@ -39,9 +39,7 @@ class FilterParser {
     }
 
     @SuppressWarnings("unchecked")
-    private static Rule parseRawRule(final Class<? extends RuleTarget> targetClass, final Map<String, Object> rawRule) {
-        String rawOperator = rawRule.get("operator").toString().toUpperCase();
-        String rawField = rawRule.get("field").toString().toUpperCase();
+    private static Rule parseRawRule(final RuleTargetBuilder ruleTargetBuilder, final Map<String, Object> rawRule) {
         List<Object> rawValues;
 
         if (rawRule.get("value") instanceof Collection) {
@@ -51,14 +49,17 @@ class FilterParser {
             rawValues.add(rawRule.get("value"));
         }
 
-        Class<? extends Enum> enumClass = on(targetClass).get();
-        Enum enumTarget = Enum.valueOf(enumClass, rawField);
-        RuleTarget target = on(enumTarget).get();
-
         Rule rule = new Rule();
+
+        String rawOperator = rawRule.get("operator").toString().toUpperCase();
         rule.setOperator(RuleOperator.valueOf(rawOperator));
+
+        String rawField = rawRule.get("field").toString();
+        RuleTarget target = ruleTargetBuilder.build(rawField);
         rule.setTarget(target);
+
         rule.setParameters(rawValues);
+
         return rule;
     }
 
