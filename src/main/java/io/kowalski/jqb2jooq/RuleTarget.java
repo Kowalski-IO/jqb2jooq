@@ -19,12 +19,4 @@ public interface RuleTarget {
     // Getter Contract
     Field getField();
     Condition[] getImplicitConditions();
-
-    /**
-     * parse is accessed via reflection and will call your Enum's valueOf method
-     * @param value the rule id as it appears in jQuery QueryBuilder
-     * @return the parsed RuleTarget as defined by your Enumeration definition
-     */
-    RuleTarget parse(String value);
-
 }

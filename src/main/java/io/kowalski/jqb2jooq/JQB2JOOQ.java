@@ -15,12 +15,12 @@ public class JQB2JOOQ {
 
     /**
      * parse performs the transformation of filter to condition.
-     * @param targetClass must be an Enum that implements {@link RuleTarget}
+     * @param targetBuilder produces an Enum that implements {@link RuleTarget}
      * @param jsonFilter is the raw Json String representation of the jQuery QueryBuilder filter deserialized into a Map
      * @return the JOOQ Condition equivalent of the provided Json filter
      */
-    public static Condition parse(final Class<? extends RuleTarget> targetClass, final Map<String, Object> jsonFilter) {
-        Filter filter = FilterParser.parseJSON(targetClass, jsonFilter);
+    public static Condition parse(final RuleTargetBuilder targetBuilder, final Map<String, Object> jsonFilter) {
+        Filter filter = FilterParser.parseJSON(targetBuilder, jsonFilter);
         return FilterTranslator.translate(filter);
     }
 

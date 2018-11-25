@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import io.kowalski.jqb2jooq.JQB2JOOQ;
+import io.kowalski.jqb2jooq.RuleTargetBuilder;
 import io.kowalski.jqb2jooq.test.jooq.tables.pojos.Employees;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -56,7 +57,7 @@ public class FilterConversionTest {
     @Test
     public void nameLike() {
         Map<String, Object> filter = jsonToMap(FULLNAME_EQUALS_FILTER);
-        Condition condition = JQB2JOOQ.parse(TestFilterTargets.class, filter);
+        Condition condition = JQB2JOOQ.parse(ruleTargetBuilder, filter);
 
         try (DSLContext dsl = DSL.using(dataSource, SQLDialect.H2)) {
             List<Employees> employees = dsl.select().from(EMPLOYEES)
@@ -70,7 +71,7 @@ public class FilterConversionTest {
     @Test
     public void dobBetween() {
         Map<String, Object> filter = jsonToMap(DOB_BETWEEN_FILTER);
-        Condition condition = JQB2JOOQ.parse(TestFilterTargets.class, filter);
+        Condition condition = JQB2JOOQ.parse(ruleTargetBuilder, filter);
 
         try (DSLContext dsl = DSL.using(dataSource, SQLDialect.H2)) {
             List<Employees> employees = dsl.select().from(EMPLOYEES)
@@ -83,7 +84,7 @@ public class FilterConversionTest {
     @Test
     public void salaryLessThanOrEqual() {
         Map<String, Object> filter = jsonToMap(SALARY_LESS_OR_EQUAL_FILTER);
-        Condition condition = JQB2JOOQ.parse(TestFilterTargets.class, filter);
+        Condition condition = JQB2JOOQ.parse(ruleTargetBuilder, filter);
 
         try (DSLContext dsl = DSL.using(dataSource, SQLDialect.H2)) {
             List<Employees> employees = dsl.select().from(EMPLOYEES)
@@ -97,7 +98,7 @@ public class FilterConversionTest {
     @Test
     public void nestedDOBHourly() {
         Map<String, Object> filter = jsonToMap(NESTED_DOB_HOURLY_FILTER);
-        Condition condition = JQB2JOOQ.parse(TestFilterTargets.class, filter);
+        Condition condition = JQB2JOOQ.parse(ruleTargetBuilder, filter);
 
         try (DSLContext dsl = DSL.using(dataSource, SQLDialect.H2)) {
             List<Employees> employees = dsl.select().from(EMPLOYEES)
@@ -111,7 +112,7 @@ public class FilterConversionTest {
     @Test
     public void lazyCompleteTestCoverageGrabBag() {
         Map<String, Object> filter = jsonToMap(GRAB_BAG_FILTER);
-        Condition condition = JQB2JOOQ.parse(TestFilterTargets.class, filter);
+        Condition condition = JQB2JOOQ.parse(ruleTargetBuilder, filter);
 
         try (DSLContext dsl = DSL.using(dataSource, SQLDialect.H2)) {
             List<Employees> employees = dsl.select().from(EMPLOYEES)
@@ -126,4 +127,5 @@ public class FilterConversionTest {
         return GSON.fromJson(json, MAP_TYPE);
     }
 
+    private static RuleTargetBuilder ruleTargetBuilder = name -> TestFilterTargets.valueOf(name.toUpperCase());
 }
